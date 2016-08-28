@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="Note" representedClassName=".Note" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdDate" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="notebook" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notebook" inverseName="notes" inverseEntity="Notebook" syncable="YES"/>
+        <relationship name="photo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="note" inverseEntity="Photo" syncable="YES"/>
+    </entity>
+    <entity name="Notebook" representedClassName=".Notebook" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="notebook" inverseEntity="Note" syncable="YES"/>
+    </entity>
+    <entity name="Photo" representedClassName=".Photo" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="photo" inverseEntity="Note" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Note" positionX="-54" positionY="0" width="128" height="120"/>
+        <element name="Notebook" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Photo" positionX="-36" positionY="27" width="128" height="90"/>
+    </elements>
+</model>
