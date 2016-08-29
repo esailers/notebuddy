@@ -15,8 +15,8 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     
     var currentNotebook: Notebook?
     var currentNote: Note?
-    
     var resizedImage: UIImage?
+    var textViewHeight = CGFloat()
     
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
@@ -64,6 +64,13 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         
         noteTextField.delegate = self
         noteTextView.delegate = self
+        
+        textViewHeight = noteTextView.sizeThatFits(noteTextView.frame.size).height + 10.5
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if presentingViewController is UINavigationController { noteTextField.becomeFirstResponder() }
     }
     
     override func willMoveToParentViewController(parent: UIViewController?) {
@@ -164,6 +171,17 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         return scaledImage
     }
     
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0: return 50.0
+        case 1: return 200.0
+        case 2: return textViewHeight + 10.5
+        default: return 44.0
+        }
+    }
+    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -172,6 +190,12 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     }
     
     // MARK: - UITextViewDelegate
+    
+    func textViewDidChange(textView: UITextView) {
+        textViewHeight = textView.sizeThatFits(textView.frame.size).height + 10.5
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
     
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.text == "Enter text"  {
