@@ -14,18 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        
         if NSUserDefaults.standardUserDefaults().objectForKey("NavigationBar") == nil {
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NavigationBar")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
-        
-        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
-            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
-        } else {
-            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
-        }
+        setNavigationBarColors(nil)
         
         return true
     }
@@ -52,11 +45,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    // MARK: - Helpers
+    // MARK: - Set navigation bar colors
     
-    private func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
-        UINavigationBar.appearance().barTintColor = barColor
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
+    func setNavigationBarColors(navigationController: UINavigationController?) {
+        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
+            configureNavigationBarColors(navigationController, barColor: UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
+        } else {
+            configureNavigationBarColors(navigationController, barColor: UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
+        }
+    }
+    
+    func configureNavigationBarColors(navigationController: UINavigationController?, barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
+        if let navigationController = navigationController {
+            navigationController.navigationBar.barTintColor = barColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
+        } else {
+            UINavigationBar.appearance().barTintColor = barColor
+            UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
+        }
         UIApplication.sharedApplication().statusBarStyle = statusBarStyle
     }
 

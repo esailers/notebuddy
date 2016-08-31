@@ -32,14 +32,13 @@ class OptionsViewController: UIViewController, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.dataSource = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        configureNavigationColors()
+        AppDelegate().setNavigationBarColors(navigationController)
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad { navigationItem.leftBarButtonItem = nil }
     }
 
@@ -52,26 +51,8 @@ class OptionsViewController: UIViewController, UITableViewDataSource {
     @IBAction func switchTapped(sender: UISwitch) {
         NSUserDefaults.standardUserDefaults().setBool(optionsCell.optionsSwitch.on, forKey: "NavigationBar")
         NSUserDefaults.standardUserDefaults().synchronize()
-
-        configureNavigationColors()
-        
+        AppDelegate().setNavigationBarColors(navigationController)
         NSNotificationCenter.defaultCenter().postNotificationName(ConfigureNavigationColorsNotification, object: nil)
-    }
-    
-    // MARK: - Helpers
-    
-    func configureNavigationColors() {
-        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
-            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
-        } else {
-            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
-        }
-    }
-    
-    func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
-        navigationController?.navigationBar.barTintColor = barColor
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
-        UIApplication.sharedApplication().statusBarStyle = statusBarStyle
     }
     
     // MARK: - UITableViewSource

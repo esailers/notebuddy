@@ -62,17 +62,7 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     // MARK: - Helpers
     
     func configureNavigationColors() {
-        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
-            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
-        } else {
-            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
-        }
-    }
-    
-    func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
-        navigationController?.navigationBar.barTintColor = barColor
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
-        UIApplication.sharedApplication().statusBarStyle = statusBarStyle
+        AppDelegate().setNavigationBarColors(navigationController)
     }
     
     // MARK: - UITableViewDataSource
@@ -101,7 +91,6 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
             tableView.reloadData()
         }
         
-        // Began editing tableView row
         editBarButton.title = "Done"
         addBarButton.enabled = false
         
@@ -109,7 +98,6 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
-        // Ended editing tableView row
         editBarButton.title = "Edit"
         addBarButton.enabled = true
     }

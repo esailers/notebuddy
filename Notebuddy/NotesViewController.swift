@@ -96,7 +96,6 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             tableView.reloadData()
         }
         
-        // Began editing tableView row
         editBarButton.title = "Done"
         addBarButton.enabled = false
         
@@ -104,7 +103,6 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
-        // Ended editing tableView row
         editBarButton.title = "Edit"
         addBarButton.enabled = true
     }
