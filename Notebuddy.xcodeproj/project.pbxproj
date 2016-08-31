@@ -23,6 +23,8 @@
 		128034D91D651C6E00569F41 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128034D31D651C6E00569F41 /* Photo+CoreDataProperties.swift */; };
 		128034DA1D651C6E00569F41 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128034D41D651C6E00569F41 /* Photo.swift */; };
 		128034DC1D651C6E00569F41 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128034D61D651C6E00569F41 /* Note.swift */; };
+		12BF79041D7706F500ED1080 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF79031D7706F500ED1080 /* OptionsViewController.swift */; };
+		12BF79061D770B2400ED1080 /* OptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF79051D770B2400ED1080 /* OptionsTableViewCell.swift */; };
 		12DDC5F81D6F642700535F1F /* FlickrCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC5F71D6F642700535F1F /* FlickrCollectionViewCell.swift */; };
 		12DDC5FA1D6F64E800535F1F /* FlickrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC5F91D6F64E800535F1F /* FlickrViewController.swift */; };
 		12DDC6001D7058DF00535F1F /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC5FF1D7058DF00535F1F /* FlickrClient.swift */; };
@@ -48,6 +50,8 @@
 		128034D31D651C6E00569F41 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "../Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		128034D41D651C6E00569F41 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Photo.swift; path = ../Photo.swift; sourceTree = "<group>"; };
 		128034D61D651C6E00569F41 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Note.swift; path = ../Note.swift; sourceTree = "<group>"; };
+		12BF79031D7706F500ED1080 /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		12BF79051D770B2400ED1080 /* OptionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsTableViewCell.swift; sourceTree = "<group>"; };
 		12DDC5F71D6F642700535F1F /* FlickrCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrCollectionViewCell.swift; sourceTree = "<group>"; };
 		12DDC5F91D6F64E800535F1F /* FlickrViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrViewController.swift; sourceTree = "<group>"; };
 		12DDC5FF1D7058DF00535F1F /* FlickrClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 		128034C31D65137200569F41 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				12BF79031D7706F500ED1080 /* OptionsViewController.swift */,
 				122C8C071D62D49100F1B56B /* NotebooksViewController.swift */,
 				122C8C091D62D4B300F1B56B /* NotesViewController.swift */,
 				122C8C0B1D62D4C900F1B56B /* NoteTableViewController.swift */,
@@ -125,6 +130,7 @@
 		128034CD1D6515B400569F41 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				12BF79051D770B2400ED1080 /* OptionsTableViewCell.swift */,
 				12DDC5F71D6F642700535F1F /* FlickrCollectionViewCell.swift */,
 			);
 			name = View;
@@ -223,11 +229,13 @@
 				123685521D6796FD00909AC6 /* DataManager.swift in Sources */,
 				12DDC5F81D6F642700535F1F /* FlickrCollectionViewCell.swift in Sources */,
 				12DDC6021D70595000535F1F /* FlickrConstants.swift in Sources */,
+				12BF79041D7706F500ED1080 /* OptionsViewController.swift in Sources */,
 				122C8C0A1D62D4B300F1B56B /* NotesViewController.swift in Sources */,
 				128034D71D651C6E00569F41 /* Notebook+CoreDataProperties.swift in Sources */,
 				122C8BF61D62D42000F1B56B /* AppDelegate.swift in Sources */,
 				128034DC1D651C6E00569F41 /* Note.swift in Sources */,
 				128034D81D651C6E00569F41 /* Notebook.swift in Sources */,
+				12BF79061D770B2400ED1080 /* OptionsTableViewCell.swift in Sources */,
 				12DDC6001D7058DF00535F1F /* FlickrClient.swift in Sources */,
 				128034DA1D651C6E00569F41 /* Photo.swift in Sources */,
 				128034D91D651C6E00569F41 /* Photo+CoreDataProperties.swift in Sources */,

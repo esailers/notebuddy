@@ -13,9 +13,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("NavigationBar") == nil {
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NavigationBar")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+        
+        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
+            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
+        } else {
+            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
+        }
+        
         return true
     }
 
@@ -41,6 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    // MARK: - Helpers
+    
+    private func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
+        UINavigationBar.appearance().barTintColor = barColor
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
+        UIApplication.sharedApplication().statusBarStyle = statusBarStyle
+    }
 
 }
 
