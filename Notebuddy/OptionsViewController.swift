@@ -32,6 +32,10 @@ class OptionsViewController: UIViewController, UITableViewDataSource {
 
         tableView.dataSource = self
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        configureNavigationColors()
+    }
 
     // MARK: - Actions
     
@@ -43,14 +47,18 @@ class OptionsViewController: UIViewController, UITableViewDataSource {
         NSUserDefaults.standardUserDefaults().setBool(optionsCell.optionsSwitch.on, forKey: "NavigationBar")
         NSUserDefaults.standardUserDefaults().synchronize()
 
+        configureNavigationColors()
+    }
+    
+    // MARK: - Helpers
+    
+    private func configureNavigationColors() {
         if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
             setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
         } else {
             setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
         }
     }
-    
-    // MARK: - Helpers
     
     private func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
         navigationController?.navigationBar.barTintColor = barColor

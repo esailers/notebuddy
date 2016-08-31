@@ -35,6 +35,16 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
         self.notebooks = Notebook.sharedInstance().fetchNotebookItems()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    
+        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
+            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
+        } else {
+            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
+        }
+    }
+    
     // MARK: - Actions
     
     func editNotebook(sender: UIBarButtonItem) {
@@ -51,6 +61,14 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     
     func addNotebook(sender: UIBarButtonItem) {
         presentAlertForNewNotebook()
+    }
+    
+    // MARK: - Helpers
+    
+    private func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
+        navigationController?.navigationBar.barTintColor = barColor
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
+        UIApplication.sharedApplication().statusBarStyle = statusBarStyle
     }
     
     // MARK: - UITableViewDataSource
