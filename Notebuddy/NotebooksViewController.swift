@@ -32,17 +32,13 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
         tableView.dataSource = self
         tableView.delegate = self
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.configureNavigationColors), name: ConfigureNavigationColorsNotification, object: nil)
+        
         self.notebooks = Notebook.sharedInstance().fetchNotebookItems()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-    
-        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
-            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
-        } else {
-            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
-        }
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ConfigureNavigationColorsNotification, object: nil)
     }
     
     // MARK: - Actions
@@ -65,7 +61,15 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     
     // MARK: - Helpers
     
-    private func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
+    func configureNavigationColors() {
+        if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
+            setNavigationBarColorsWithBarColor(UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
+        } else {
+            setNavigationBarColorsWithBarColor(UIColor.whiteColor(), titleColor: UIColor.blackColor(), statusBarStyle: .Default)
+        }
+    }
+    
+    func setNavigationBarColorsWithBarColor(barColor: UIColor, titleColor: UIColor, statusBarStyle: UIStatusBarStyle) {
         navigationController?.navigationBar.barTintColor = barColor
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: titleColor]
         UIApplication.sharedApplication().statusBarStyle = statusBarStyle
