@@ -25,7 +25,7 @@
                                         <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mlz-l4-PDF" id="9f3-wt-AA8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yd6-Cx-i0s">
@@ -226,7 +226,7 @@
                                         <rect key="frame" x="0.0" y="64" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lxi-cT-vBw" id="pHP-RF-qTG">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tYJ-Gs-Qe1">
@@ -263,7 +263,7 @@
                                         <rect key="frame" x="0.0" y="114" width="600" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MJJ-aJ-wPd" id="CEg-ur-sBe">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="199.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KLr-TU-FXm">
@@ -294,7 +294,7 @@
                                         <rect key="frame" x="0.0" y="314" width="600" height="32"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xj-Ti-bYC" id="y09-7B-sPc">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="32"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="31.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wA8-Co-pF7">
@@ -340,7 +340,7 @@
                         <outlet property="noteTextField" destination="tYJ-Gs-Qe1" id="IaJ-Qs-oFV"/>
                         <outlet property="noteTextView" destination="wA8-Co-pF7" id="gs1-Lu-WkU"/>
                         <outlet property="saveBarButton" destination="XbP-Ws-tsm" id="Z6i-n2-KyR"/>
-                        <segue destination="aYv-va-yuD" kind="presentation" identifier="segueToFlickr" id="cbg-s6-SS8"/>
+                        <segue destination="aYv-va-yuD" kind="presentation" identifier="segueToFlickr" modalPresentationStyle="formSheet" id="cbg-s6-SS8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vyg-c4-LVD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -515,6 +515,6 @@
         <image name="gear" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ANO-Gi-4Vd"/>
+        <segue reference="NLT-su-bRJ"/>
     </inferredMetricsTieBreakers>
 </document>

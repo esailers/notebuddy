@@ -118,6 +118,13 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         noteTextView.resignFirstResponder()
     }
     
+    private func configurePopover(popoverPresentationController: UIPopoverPresentationController) {
+        resignFirstResponders()
+        popoverPresentationController.sourceRect = noteImageView.frame
+        popoverPresentationController.sourceView = self.view
+        popoverPresentationController.permittedArrowDirections = .Any
+    }
+    
     // MARK: - Gesture Recognizer
     
     func addTapGestureRecognizer() {
@@ -241,9 +248,9 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         alertController.addAction(flickrPhotoAction)
         
         // Configure popover for iPad
-//        if let popoverPresentationController = alertController.popoverPresentationController {
-//            popoverPresentationController.barButtonItem = cameraBarButton
-//        }
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            configurePopover(popoverPresentationController)
+        }
         
         presentViewController(alertController, animated: true, completion: nil)
     }
@@ -254,10 +261,10 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         imagePickerController.sourceType = sourceType
         
         // Configure popover for Photo Library on iPad
-//        if imagePickerController.sourceType == .PhotoLibrary { imagePickerController.modalPresentationStyle = .Popover }
-//        if let popoverPresentationController = imagePickerController.popoverPresentationController {
-//            popoverPresentationController.barButtonItem = cameraBarButton
-//        }
+        if imagePickerController.sourceType == .PhotoLibrary { imagePickerController.modalPresentationStyle = .Popover }
+        if let popoverPresentationController = imagePickerController.popoverPresentationController {
+            configurePopover(popoverPresentationController)
+        }
         
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
