@@ -99,7 +99,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     
     @IBAction func saveNote(sender: UIBarButtonItem) {
         if let currentNotebook = currentNotebook, titleText = noteTextField.text {
-            if titleText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "" {
+            if titleText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "" && resizedImage != nil {
                 currentNote = Note.sharedInstance().insertNoteInNotebook(currentNotebook, title: titleText, content: noteTextView.text)
                 
                 if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
@@ -107,7 +107,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
                 }
                 resignFirstResponders()
                 dismissViewControllerAnimated(true, completion: nil)
-            } else { presentAlertForTitle("Warning", message: "Please enter a title for your note.") }
+            } else { presentAlertForTitle("Warning", message: "Please enter a title and add a photo for your note.") }
         }
     }
     
