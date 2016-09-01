@@ -120,8 +120,8 @@
 				128034D21D651C6E00569F41 /* Notebook.swift */,
 				128034D61D651C6E00569F41 /* Note.swift */,
 				128034D41D651C6E00569F41 /* Photo.swift */,
-				12DDC6031D7059E100535F1F /* Flickr */,
 				128034DD1D651CAA00569F41 /* Core Data Properties */,
+				12DDC6031D7059E100535F1F /* Flickr */,
 				128034CE1D65192F00569F41 /* Model.xcdatamodeld */,
 			);
 			name = Model;

@@ -68,10 +68,10 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         textViewHeight = noteTextView.sizeThatFits(noteTextView.frame.size).height + 10.5
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if presentingViewController is UINavigationController { noteTextField.becomeFirstResponder() }
-    }
+//    override func viewDidAppear(animated: Bool) {
+//        super.viewDidAppear(animated)
+//        if presentingViewController is UINavigationController { noteTextField.becomeFirstResponder() }
+//    }
     
     override func willMoveToParentViewController(parent: UIViewController?) {
         if parent == nil {
