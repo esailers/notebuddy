@@ -16,23 +16,23 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     var currentNotebook: Notebook?
     var currentNote: Note?
     var resizedImage: UIImage?
-    var textViewHeight = CGFloat()
     
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
-    @IBOutlet weak var addPhotoLabel: UILabel!
     
-    @IBOutlet weak var noteTextField: UITextField!
-    @IBOutlet weak var noteImageView: UIImageView!
-    @IBOutlet weak var noteTextView: UITextView!
+    let noteTitleCellIdentifier = "noteTitleCell"
+    let notePhotoCellIdentifier = "notePhotoCell"
+    let noteContentCellIdentifier = "noteContentCell"
+    
+    var noteTitleCell: NoteTitleTableViewCell!
+    var notePhotoCell: NotePhotoTableViewCell!
+    var noteContentCell: NoteContentTableViewCell!
     
     // MARK: - UIViewController lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        noteTextView.textContainerInset = UIEdgeInsetsZero
-        
+
         tableView.allowsSelection = false
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         
@@ -40,51 +40,26 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             navigationItem.leftBarButtonItem = nil
             navigationItem.rightBarButtonItem = nil
             navigationItem.title = currentNote.formattedDateAndTimeString(currentNote.createdDate)
-            noteTextField.text = currentNote.title
-            
-            if let photo = currentNote.photo, image = UIImage(data: photo.imageData!) {
-                noteImageView.image = image
-                noteImageView.backgroundColor = UIColor.whiteColor()
-                addPhotoLabel.hidden = true
-            } else {
-                noteImageView.backgroundColor = UIColor.lightGrayColor()
-            }
-                
-            noteTextView.text = currentNote.content
-            
         } else {
             navigationItem.title = Note.sharedInstance().formattedDateAndTimeString(NSDate())
-            noteImageView.backgroundColor = UIColor.lightGrayColor()
-            noteTextView.text = "Enter text"
         }
         
-        // Need to enable user interaction for the imageView before the long press gesture can be recognized
-        noteImageView.userInteractionEnabled = true
-        addTapGestureRecognizer()
-        
-        noteTextField.delegate = self
-        noteTextView.delegate = self
-        
-        textViewHeight = noteTextView.sizeThatFits(noteTextView.frame.size).height + 10.5
+        tableView.estimatedRowHeight = 50
     }
-    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        if presentingViewController is UINavigationController { noteTextField.becomeFirstResponder() }
-//    }
     
     override func willMoveToParentViewController(parent: UIViewController?) {
         if parent == nil {
             
-            if noteTextView.text == "" {
-                noteTextView.text = "Enter text"
+            if noteContentCell.noteTextView.text == "" {
+                noteContentCell.noteTextView.text = "Enter text"
             }
             
-            currentNote?.setValue(noteTextField.text, forKey: "title")
+            
+            currentNote?.setValue(noteTitleCell.noteTitleTextField.text, forKey: "title")
             if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
                 currentNote?.photo?.setValue(imageData, forKey: "imageData")
             }
-            currentNote?.setValue(noteTextView.text, forKey: "content")
+            currentNote?.setValue(noteContentCell.noteTextView.text, forKey: "content")
             DataManager.saveManagedContext()
             resignFirstResponders()
         }
@@ -98,9 +73,9 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     }
     
     @IBAction func saveNote(sender: UIBarButtonItem) {
-        if let currentNotebook = currentNotebook, titleText = noteTextField.text {
+        if let currentNotebook = currentNotebook, titleText = noteTitleCell.noteTitleTextField.text {
             if titleText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "" && resizedImage != nil {
-                currentNote = Note.sharedInstance().insertNoteInNotebook(currentNotebook, title: titleText, content: noteTextView.text)
+                currentNote = Note.sharedInstance().insertNoteInNotebook(currentNotebook, title: titleText, content: noteContentCell.noteTextView.text)
                 
                 if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
                     currentNote?.photo = Photo.sharedInstance().insertPhotoInNote(currentNote!, imageData: imageData)
@@ -114,13 +89,13 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     // MARK: - Helpers
     
     func resignFirstResponders() {
-        noteTextField.resignFirstResponder()
-        noteTextView.resignFirstResponder()
+        noteTitleCell.noteTitleTextField.resignFirstResponder()
+        noteContentCell.noteTextView.resignFirstResponder()
     }
     
     private func configurePopover(popoverPresentationController: UIPopoverPresentationController) {
         resignFirstResponders()
-        popoverPresentationController.sourceRect = noteImageView.frame
+        popoverPresentationController.sourceRect = notePhotoCell.noteImageView.frame //noteImageView.frame
         popoverPresentationController.sourceView = self.view
         popoverPresentationController.permittedArrowDirections = .Any
     }
@@ -130,7 +105,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     func addTapGestureRecognizer() {
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         tapGesture.delegate = self
-        noteImageView.addGestureRecognizer(tapGesture)
+        notePhotoCell.noteImageView.addGestureRecognizer(tapGesture)
     }
     
     func handleTap(gestureRecognizer: UITapGestureRecognizer) {
@@ -147,9 +122,9 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             resizedImage = resizeImage(selectedImage)
             
-            addPhotoLabel.hidden = true
-            noteImageView.image = resizedImage
-            noteImageView.backgroundColor = UIColor.whiteColor()
+            notePhotoCell.notePhotoLabel.hidden = true
+            notePhotoCell.noteImageView.image = resizedImage
+            notePhotoCell.noteImageView.backgroundColor = UIColor.whiteColor()
             
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -178,15 +153,61 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         return scaledImage
     }
     
+    // MARK: - UITableViewDataSource
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0:
+            noteTitleCell = tableView.dequeueReusableCellWithIdentifier(noteTitleCellIdentifier, forIndexPath: indexPath) as! NoteTitleTableViewCell
+            noteTitleCell.noteTitleTextField.delegate = self
+            
+            if let currentNote = currentNote {
+                noteTitleCell.noteTitleTextField.text = currentNote.title
+            }
+            
+            return noteTitleCell
+        case 1:
+            notePhotoCell = tableView.dequeueReusableCellWithIdentifier(notePhotoCellIdentifier, forIndexPath: indexPath) as! NotePhotoTableViewCell
+            
+            if let currentNote = currentNote, photo = currentNote.photo, image = UIImage(data: photo.imageData!) {
+                notePhotoCell.noteImageView.image = image
+                notePhotoCell.noteImageView.backgroundColor = UIColor.whiteColor()
+                notePhotoCell.notePhotoLabel.hidden = true
+            } else {
+                notePhotoCell.noteImageView.backgroundColor = UIColor.lightGrayColor()
+            }
+            
+            notePhotoCell.noteImageView.userInteractionEnabled = true
+            addTapGestureRecognizer()
+            
+            return notePhotoCell
+        case 2:
+            noteContentCell = tableView.dequeueReusableCellWithIdentifier(noteContentCellIdentifier, forIndexPath: indexPath) as! NoteContentTableViewCell
+            noteContentCell.noteTextView.textContainerInset = UIEdgeInsetsZero
+            noteContentCell.noteTextView.delegate = self
+            
+            if let currentNote = currentNote {
+                noteContentCell.noteTextView.text = currentNote.content
+            } else {
+                noteContentCell.noteTextView.text = "Enter text"
+            }
+            
+            return noteContentCell
+        default:
+            let cell = tableView.dequeueReusableCellWithIdentifier("cellIdentifier", forIndexPath: indexPath)
+            return cell
+        }
+    }
+    
     // MARK: - UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.row {
-        case 0: return 50.0
-        case 1: return 200.0
-        case 2: return textViewHeight + 10.5
-        default: return 44.0
-        }
+        guard indexPath.row == 1 else { return UITableViewAutomaticDimension }
+        return 200.0
     }
     
     // MARK: - UITextFieldDelegate
@@ -199,9 +220,13 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     // MARK: - UITextViewDelegate
     
     func textViewDidChange(textView: UITextView) {
-        textViewHeight = textView.sizeThatFits(textView.frame.size).height + 10.5
+        // Code from http://candycode.io/self-sizing-uitextview-in-a-uitableview-using-auto-layout-like-reminders-app/
+        let currentOffset = tableView.contentOffset
+        UIView.setAnimationsEnabled(false)
         tableView.beginUpdates()
         tableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
+        tableView.setContentOffset(currentOffset, animated: false)
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
@@ -280,10 +305,11 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     
     func selectedImagePath(path: String) {
         if let imageURL = NSURL(string: path), imageData = NSData(contentsOfURL: imageURL) {
-            noteImageView.image = UIImage(data: imageData)
-            resizedImage = noteImageView.image
-            addPhotoLabel.hidden = true
-            noteImageView.backgroundColor = UIColor.whiteColor()
+            
+            notePhotoCell.noteImageView.image = UIImage(data: imageData)
+            resizedImage = notePhotoCell.noteImageView.image
+            notePhotoCell.notePhotoLabel.hidden = true
+            notePhotoCell.backgroundColor = UIColor.whiteColor()
         }
         dismissViewControllerAnimated(true, completion: nil)
     }

@@ -22,10 +22,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="optionsCell" id="mlz-l4-PDF" customClass="OptionsTableViewCell" customModule="Notebuddy" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mlz-l4-PDF" id="9f3-wt-AA8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yd6-Cx-i0s">
@@ -215,107 +215,114 @@
         <scene sceneID="oYh-7t-odI">
             <objects>
                 <tableViewController id="6pL-er-irV" customClass="NoteTableViewController" customModule="Notebuddy" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4wE-my-ca5">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4wE-my-ca5">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <sections>
-                            <tableViewSection id="BfJ-mx-vH9">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteTitleCell" rowHeight="50" id="lxi-cT-vBw">
-                                        <rect key="frame" x="0.0" y="64" width="600" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lxi-cT-vBw" id="pHP-RF-qTG">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tYJ-Gs-Qe1">
-                                                    <rect key="frame" x="16" y="5" width="568" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="Il6-2g-b9R"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="Il6-2g-b9R"/>
-                                                        </mask>
-                                                    </variation>
-                                                </textField>
-                                            </subviews>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteTitleCell" rowHeight="50" id="lxi-cT-vBw" customClass="NoteTitleTableViewCell" customModule="Notebuddy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lxi-cT-vBw" id="pHP-RF-qTG">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tYJ-Gs-Qe1">
+                                            <rect key="frame" x="16" y="5" width="568" height="40"/>
                                             <constraints>
-                                                <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="centerX" secondItem="pHP-RF-qTG" secondAttribute="centerX" id="0XA-Kb-dWb"/>
-                                                <constraint firstAttribute="bottom" secondItem="tYJ-Gs-Qe1" secondAttribute="bottom" constant="4.5" id="9kd-87-dXX"/>
-                                                <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="leading" secondItem="pHP-RF-qTG" secondAttribute="leading" constant="16" id="WUV-Sv-a6A"/>
-                                                <constraint firstAttribute="trailing" secondItem="tYJ-Gs-Qe1" secondAttribute="trailing" constant="16" id="mus-3U-GVT"/>
-                                                <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="top" secondItem="pHP-RF-qTG" secondAttribute="top" constant="5" id="us6-zL-qG3"/>
-                                                <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="centerY" secondItem="pHP-RF-qTG" secondAttribute="centerY" id="z0d-rB-b2R"/>
+                                                <constraint firstAttribute="height" constant="30" id="Il6-2g-b9R"/>
                                             </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="0XA-Kb-dWb"/>
-                                                    <exclude reference="z0d-rB-b2R"/>
+                                                    <exclude reference="Il6-2g-b9R"/>
                                                 </mask>
                                             </variation>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notePhotoCell" rowHeight="200" id="MJJ-aJ-wPd">
-                                        <rect key="frame" x="0.0" y="114" width="600" height="200"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MJJ-aJ-wPd" id="CEg-ur-sBe">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="199.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KLr-TU-FXm">
-                                                    <rect key="frame" x="16" y="8" width="568" height="184"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-Pf-VWX">
-                                                    <rect key="frame" x="232" y="82" width="136" height="36"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="136" id="dbD-pb-tnn"/>
-                                                        <constraint firstAttribute="height" constant="36" id="hct-in-GoG"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="centerX" secondItem="pHP-RF-qTG" secondAttribute="centerX" id="0XA-Kb-dWb"/>
+                                        <constraint firstAttribute="bottom" secondItem="tYJ-Gs-Qe1" secondAttribute="bottom" constant="4.5" id="9kd-87-dXX"/>
+                                        <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="leading" secondItem="pHP-RF-qTG" secondAttribute="leading" constant="16" id="WUV-Sv-a6A"/>
+                                        <constraint firstAttribute="trailing" secondItem="tYJ-Gs-Qe1" secondAttribute="trailing" constant="16" id="mus-3U-GVT"/>
+                                        <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="top" secondItem="pHP-RF-qTG" secondAttribute="top" constant="5" id="us6-zL-qG3"/>
+                                        <constraint firstItem="tYJ-Gs-Qe1" firstAttribute="centerY" secondItem="pHP-RF-qTG" secondAttribute="centerY" id="z0d-rB-b2R"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="0XA-Kb-dWb"/>
+                                            <exclude reference="z0d-rB-b2R"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="noteTitleTextField" destination="tYJ-Gs-Qe1" id="DIe-cc-vsW"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notePhotoCell" rowHeight="200" id="MJJ-aJ-wPd" customClass="NotePhotoTableViewCell" customModule="Notebuddy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="142" width="600" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MJJ-aJ-wPd" id="CEg-ur-sBe">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KLr-TU-FXm">
+                                            <rect key="frame" x="16" y="8" width="568" height="184"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-Pf-VWX">
+                                            <rect key="frame" x="232" y="82" width="136" height="36"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="KLr-TU-FXm" secondAttribute="bottom" constant="8" id="01h-oW-p8g"/>
-                                                <constraint firstItem="KLr-TU-FXm" firstAttribute="leading" secondItem="CEg-ur-sBe" secondAttribute="leading" constant="16" id="LXY-4B-fAt"/>
-                                                <constraint firstItem="8ZO-Pf-VWX" firstAttribute="centerX" secondItem="KLr-TU-FXm" secondAttribute="centerX" id="SIX-Af-ez4"/>
-                                                <constraint firstItem="KLr-TU-FXm" firstAttribute="top" secondItem="CEg-ur-sBe" secondAttribute="top" constant="8" id="axy-RN-srr"/>
-                                                <constraint firstItem="8ZO-Pf-VWX" firstAttribute="centerY" secondItem="KLr-TU-FXm" secondAttribute="centerY" id="bJU-am-KJ4"/>
-                                                <constraint firstAttribute="trailing" secondItem="KLr-TU-FXm" secondAttribute="trailing" constant="16" id="ctz-ao-ZiD"/>
+                                                <constraint firstAttribute="width" constant="136" id="dbD-pb-tnn"/>
+                                                <constraint firstAttribute="height" constant="36" id="hct-in-GoG"/>
                                             </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteContentCell" rowHeight="32" id="1Xj-Ti-bYC">
-                                        <rect key="frame" x="0.0" y="314" width="600" height="32"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xj-Ti-bYC" id="y09-7B-sPc">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="31.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wA8-Co-pF7">
-                                                    <rect key="frame" x="16" y="0.0" width="568" height="32"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="wA8-Co-pF7" firstAttribute="leading" secondItem="y09-7B-sPc" secondAttribute="leading" constant="16" id="QBp-ce-DKN"/>
-                                                <constraint firstItem="wA8-Co-pF7" firstAttribute="top" secondItem="y09-7B-sPc" secondAttribute="top" id="cqt-fh-Cne"/>
-                                                <constraint firstAttribute="trailing" secondItem="wA8-Co-pF7" secondAttribute="trailing" constant="16" id="fXz-Q5-FPd"/>
-                                                <constraint firstAttribute="bottom" secondItem="wA8-Co-pF7" secondAttribute="bottom" id="ftX-2S-uIe"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
+                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="KLr-TU-FXm" secondAttribute="bottom" constant="8" id="01h-oW-p8g"/>
+                                        <constraint firstItem="KLr-TU-FXm" firstAttribute="leading" secondItem="CEg-ur-sBe" secondAttribute="leading" constant="16" id="LXY-4B-fAt"/>
+                                        <constraint firstItem="8ZO-Pf-VWX" firstAttribute="centerX" secondItem="KLr-TU-FXm" secondAttribute="centerX" id="SIX-Af-ez4"/>
+                                        <constraint firstItem="KLr-TU-FXm" firstAttribute="top" secondItem="CEg-ur-sBe" secondAttribute="top" constant="8" id="axy-RN-srr"/>
+                                        <constraint firstItem="8ZO-Pf-VWX" firstAttribute="centerY" secondItem="KLr-TU-FXm" secondAttribute="centerY" id="bJU-am-KJ4"/>
+                                        <constraint firstAttribute="trailing" secondItem="KLr-TU-FXm" secondAttribute="trailing" constant="16" id="ctz-ao-ZiD"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="noteImageView" destination="KLr-TU-FXm" id="eNG-cB-knj"/>
+                                    <outlet property="notePhotoLabel" destination="8ZO-Pf-VWX" id="a3k-wp-uPp"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteContentCell" rowHeight="32" id="1Xj-Ti-bYC" customClass="NoteContentTableViewCell" customModule="Notebuddy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="342" width="600" height="32"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Xj-Ti-bYC" id="y09-7B-sPc">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="32"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wA8-Co-pF7">
+                                            <rect key="frame" x="16" y="0.0" width="568" height="32"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="wA8-Co-pF7" firstAttribute="leading" secondItem="y09-7B-sPc" secondAttribute="leading" constant="16" id="QBp-ce-DKN"/>
+                                        <constraint firstItem="wA8-Co-pF7" firstAttribute="top" secondItem="y09-7B-sPc" secondAttribute="top" id="cqt-fh-Cne"/>
+                                        <constraint firstAttribute="trailing" secondItem="wA8-Co-pF7" secondAttribute="trailing" constant="16" id="fXz-Q5-FPd"/>
+                                        <constraint firstAttribute="bottom" secondItem="wA8-Co-pF7" secondAttribute="bottom" id="ftX-2S-uIe"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="noteTextView" destination="wA8-Co-pF7" id="4Xv-26-HHD"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="6pL-er-irV" id="2Y5-iY-PYS"/>
                             <outlet property="delegate" destination="6pL-er-irV" id="1jD-Yb-BHi"/>
@@ -334,11 +341,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addPhotoLabel" destination="8ZO-Pf-VWX" id="zk1-0L-1Vw"/>
                         <outlet property="cancelBarButton" destination="hw1-3y-mg1" id="wmm-xn-sDZ"/>
-                        <outlet property="noteImageView" destination="KLr-TU-FXm" id="XDq-g6-9Xi"/>
-                        <outlet property="noteTextField" destination="tYJ-Gs-Qe1" id="IaJ-Qs-oFV"/>
-                        <outlet property="noteTextView" destination="wA8-Co-pF7" id="gs1-Lu-WkU"/>
                         <outlet property="saveBarButton" destination="XbP-Ws-tsm" id="Z6i-n2-KyR"/>
                         <segue destination="aYv-va-yuD" kind="presentation" identifier="segueToFlickr" modalPresentationStyle="formSheet" id="cbg-s6-SS8"/>
                     </connections>
@@ -359,12 +362,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Text" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NAf-zh-Wks">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Text" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NAf-zh-Wks">
                                 <rect key="frame" x="20" y="72" width="560" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
                             </textField>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="J7i-Cz-uMj">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="J7i-Cz-uMj">
                                 <rect key="frame" x="20" y="110" width="560" height="490"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="D9V-fO-o4S">
