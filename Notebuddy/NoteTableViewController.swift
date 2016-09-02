@@ -54,7 +54,6 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
                 noteContentCell.noteTextView.text = "Enter text"
             }
             
-            
             currentNote?.setValue(noteTitleCell.noteTitleTextField.text, forKey: "title")
             if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
                 currentNote?.photo?.setValue(imageData, forKey: "imageData")
@@ -301,7 +300,6 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     
     func selectedImagePath(path: String) {
         if let imageURL = NSURL(string: path), imageData = NSData(contentsOfURL: imageURL) {
-            
             notePhotoCell.noteImageView.image = UIImage(data: imageData)
             resizedImage = notePhotoCell.noteImageView.image
             notePhotoCell.notePhotoLabel.hidden = true
