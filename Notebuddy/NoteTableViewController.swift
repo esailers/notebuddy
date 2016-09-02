@@ -124,7 +124,6 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             
             notePhotoCell.notePhotoLabel.hidden = true
             notePhotoCell.noteImageView.image = resizedImage
-            notePhotoCell.noteImageView.backgroundColor = UIColor.whiteColor()
             
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -175,10 +174,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             
             if let currentNote = currentNote, photo = currentNote.photo, image = UIImage(data: photo.imageData!) {
                 notePhotoCell.noteImageView.image = image
-                notePhotoCell.noteImageView.backgroundColor = UIColor.whiteColor()
                 notePhotoCell.notePhotoLabel.hidden = true
-            } else {
-                notePhotoCell.noteImageView.backgroundColor = UIColor.lightGrayColor()
             }
             
             notePhotoCell.noteImageView.userInteractionEnabled = true
@@ -309,7 +305,6 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             notePhotoCell.noteImageView.image = UIImage(data: imageData)
             resizedImage = notePhotoCell.noteImageView.image
             notePhotoCell.notePhotoLabel.hidden = true
-            notePhotoCell.backgroundColor = UIColor.whiteColor()
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
