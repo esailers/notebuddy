@@ -15,7 +15,6 @@ import CoreData
 extension Photo {
 
     @NSManaged var imageData: NSData?
-    @NSManaged var path: String?
     @NSManaged var note: NSManagedObject?
 
 }

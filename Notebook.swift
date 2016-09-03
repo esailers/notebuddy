@@ -10,8 +10,6 @@ import Foundation
 import CoreData
 
 class Notebook: NSManagedObject {
-    
-    // MARK: - Properties
 
     // MARK: - Singleton
     class func sharedInstance() -> Notebook {

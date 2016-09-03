@@ -12,7 +12,7 @@ class FlickrClient {
     
     // MARK: - typealias shorthand for completion handler
     
-    typealias FlickrSearchCompletionHandler = (photos: [Photo]?, errorText: String?) -> Void
+    typealias FlickrSearchCompletionHandler = (photos: [FlickrPhoto]?, errorText: String?) -> Void
     
     // MARK: - HTTPMethod enum
     
@@ -99,14 +99,14 @@ class FlickrClient {
             return completionHandler(photos: nil, errorText: "Could not find keys \(FlickrClient.JSONResponseKeys.photos) and \(FlickrClient.JSONResponseKeys.photo) in \(parsedResult).")
         }
         
-        let photos: [Photo] = Photo.sharedInstance().getFlickrPhotos(photoArray)
+        let photos: [FlickrPhoto] = FlickrPhoto.photosFromResults(photoArray)
         completionHandler(photos: photos, errorText: nil)
     }
     
     // MARK: - Get a photo
     
-    func imageDataForPhoto(photo: Photo, completionHandler: (imageData: NSData?, error: NSError?) -> Void) {
-        if let path = photo.path, url = NSURL(string: path) {
+    func imageDataForPhoto(flickrPhoto: FlickrPhoto, completionHandler: (imageData: NSData?, error: NSError?) -> Void) {
+        if let path = flickrPhoto.path, url = NSURL(string: path) {
             makeRequestAtURL(url, method: .GET) { (data, error) in
                 
                 guard error == nil else {

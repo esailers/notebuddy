@@ -22,7 +22,7 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
     @IBOutlet weak var collectionView: UICollectionView!
     let flickrCell = "flickrCell"
     
-    var photos = [Photo]()
+    var photos = [FlickrPhoto]()
     
     // MARK: - UIViewController lifecycle
 

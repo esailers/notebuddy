@@ -13,12 +13,11 @@
     </entity>
     <entity name="Photo" representedClassName=".Photo" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="photo" inverseEntity="Note" syncable="YES"/>
     </entity>
     <elements>
         <element name="Note" positionX="-54" positionY="0" width="128" height="120"/>
         <element name="Notebook" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="Photo" positionX="-36" positionY="27" width="128" height="90"/>
+        <element name="Photo" positionX="-36" positionY="27" width="128" height="75"/>
     </elements>
 </model>

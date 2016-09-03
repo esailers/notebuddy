@@ -32,6 +32,7 @@
 		12DDC5FA1D6F64E800535F1F /* FlickrViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC5F91D6F64E800535F1F /* FlickrViewController.swift */; };
 		12DDC6001D7058DF00535F1F /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC5FF1D7058DF00535F1F /* FlickrClient.swift */; };
 		12DDC6021D70595000535F1F /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DDC6011D70595000535F1F /* FlickrConstants.swift */; };
+		12FCBE211D7B54BE0080C1A5 /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCBE201D7B54BE0080C1A5 /* FlickrPhoto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		12DDC5F91D6F64E800535F1F /* FlickrViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrViewController.swift; sourceTree = "<group>"; };
 		12DDC5FF1D7058DF00535F1F /* FlickrClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		12DDC6011D70595000535F1F /* FlickrConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
+		12FCBE201D7B54BE0080C1A5 /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhoto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				128034D21D651C6E00569F41 /* Notebook.swift */,
 				128034D61D651C6E00569F41 /* Note.swift */,
 				128034D41D651C6E00569F41 /* Photo.swift */,
+				12FCBE201D7B54BE0080C1A5 /* FlickrPhoto.swift */,
 				128034DD1D651CAA00569F41 /* Core Data Properties */,
 				12DDC6031D7059E100535F1F /* Flickr */,
 				128034CE1D65192F00569F41 /* Model.xcdatamodeld */,
@@ -244,6 +247,7 @@
 				12CC03C41D793FAC00D0C78B /* NoteTitleTableViewCell.swift in Sources */,
 				12CC03C61D793FBF00D0C78B /* NotePhotoTableViewCell.swift in Sources */,
 				122C8BF61D62D42000F1B56B /* AppDelegate.swift in Sources */,
+				12FCBE211D7B54BE0080C1A5 /* FlickrPhoto.swift in Sources */,
 				128034DC1D651C6E00569F41 /* Note.swift in Sources */,
 				128034D81D651C6E00569F41 /* Notebook.swift in Sources */,
 				12BF79061D770B2400ED1080 /* OptionsTableViewCell.swift in Sources */,
