@@ -1,5 +1,5 @@
 # Notebuddy
-Notebuddy is a writing app for children to write about a photo prompt. The app was created as a final project for the Udacity iOS Nanodegree.
+Notebuddy is a writing app for children (grades 1-3) to write (1-2 paragraphs or more) about a photo prompt. The app was created as a final project for the Udacity iOS Nanodegree.
 
 ## Usage
 1. Add a notebook
