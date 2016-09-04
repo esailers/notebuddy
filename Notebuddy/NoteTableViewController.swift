@@ -289,13 +289,6 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
-    func presentAlertForTitle(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-        alertController.addAction(okAction)
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-    
     // MARK: - FlickrViewControllerDelegate
     
     func selectedImagePath(path: String) {

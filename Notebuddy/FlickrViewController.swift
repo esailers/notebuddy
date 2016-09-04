@@ -136,9 +136,13 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
         }
     }
     
+}
+
+extension UIViewController {
+    
     // MARK: - UIAlertController
     
-    private func presentAlertForTitle(title: String, message: String) {
+    func presentAlertForTitle(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
         alertController.addAction(okAction)
