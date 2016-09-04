@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSUserDefaults.standardUserDefaults().setBool(false, forKey: "NavigationBar")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
-        setNavigationBarColors(nil)
+        setNavigationBarColors()
         
         return true
     }
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Set navigation bar colors
     
-    func setNavigationBarColors(navigationController: UINavigationController?) {
+    func setNavigationBarColors(navigationController: UINavigationController? = nil) {
         if NSUserDefaults.standardUserDefaults().boolForKey("NavigationBar") {
             configureNavigationBarColors(navigationController, barColor: UIColor.blackColor(), titleColor: UIColor.whiteColor(), statusBarStyle: .LightContent)
         } else {
