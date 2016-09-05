@@ -44,6 +44,8 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             navigationItem.title = Note.sharedInstance().formattedDateAndTimeString(NSDate())
         }
         
+        AppDelegate().setNavigationBarColors(navigationController)
+        
         tableView.estimatedRowHeight = 50
     }
     
@@ -279,6 +281,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = sourceType
+        AppDelegate().setNavigationBarColors(imagePickerController.navigationController)
         
         // Configure popover for Photo Library on iPad
         if imagePickerController.sourceType == .PhotoLibrary { imagePickerController.modalPresentationStyle = .Popover }

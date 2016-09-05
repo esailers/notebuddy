@@ -32,8 +32,9 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
         flickrTextField.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
-        
         collectionView.allowsMultipleSelection = false
+        
+        AppDelegate().setNavigationBarColors(navigationController)
         
         configureKeyboardView()
     }
