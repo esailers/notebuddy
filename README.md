@@ -9,7 +9,7 @@ Notebuddy is a writing app for children (grades 1-3) to write (1-2 paragraphs or
 *Please note that the data model was changed on 9.3.16. If you downloaded Notebuddy prior to the change, please delete the old version, then install the new one.
 
 ## Compatibility
-Notebuddy is a universal iOS app that was built with Xcode 7.3 for iOS 9.3.
+Notebuddy is a universal iOS app written with Swift 3.0, and built with Xcode 8.0 for iOS 9.3 or later.
 
 ## License
 Notebuddy is released under the [MIT License](http://choosealicense.com/licenses/mit/).
