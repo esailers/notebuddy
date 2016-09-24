@@ -16,7 +16,7 @@ extension Note {
 
     @NSManaged var content: String?
     @NSManaged var title: String?
-    @NSManaged var createdDate: NSDate
+    @NSManaged var createdDate: Date
     @NSManaged var notebook: Notebook?
     @NSManaged var photo: Photo?
 

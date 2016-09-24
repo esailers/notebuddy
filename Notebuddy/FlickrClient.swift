@@ -12,7 +12,7 @@ class FlickrClient {
     
     // MARK: - typealias shorthand for completion handler
     
-    typealias FlickrSearchCompletionHandler = (photos: [FlickrPhoto]?, errorText: String?) -> Void
+    typealias FlickrSearchCompletionHandler = (_ photos: [FlickrPhoto]?, _ errorText: String?) -> Void
     
     // MARK: - HTTPMethod enum
     
@@ -31,109 +31,117 @@ class FlickrClient {
     
     // MARK: - Requests
     
-    private func makeRequestAtURL(url: NSURL, method: HTTPMethod, completionHandler: (NSData?, NSError?) -> Void) {
-        let request = NSMutableURLRequest(URL: url)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+    // Swift 2.2
+    // let task = URLSession.shared().dataTask(with: request)
+    
+    // Swift 2.3
+    // let task = URLSession.shared().dataTask(with: request as URLRequest) {
+    
+    
+    fileprivate func makeRequestAtURL(_ url: URL, method: HTTPMethod, completionHandler: @escaping (Data?, NSError?) -> Void) {
+        let request = NSMutableURLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) in
             
             guard error == nil else {
-                return completionHandler(nil, error)
+                return completionHandler(nil, error as NSError?)
             }
             
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                return completionHandler(nil, error)
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else {
+                return completionHandler(nil, error as NSError?)
             }
             
             completionHandler(data, nil)
-        }
+        }) 
         task.resume()
     }
     
-    func resultsFromFlickrSearch(text: String, completionHandler: FlickrSearchCompletionHandler) {
+    func resultsFromFlickrSearch(_ text: String, completionHandler: @escaping FlickrSearchCompletionHandler) {
         let methodParameters: [String: AnyObject] = [
-            FlickrClient.ParameterKeys.safeSearch: FlickrClient.ParameterValues.useSafeSearch,
-            FlickrClient.ParameterKeys.text: text,
-            FlickrClient.ParameterKeys.extras: FlickrClient.ParameterValues.mediumURL,
-            FlickrClient.ParameterKeys.apiKey: FlickrClient.ParameterValues.apiKey,
-            FlickrClient.ParameterKeys.method: FlickrClient.ParameterValues.searchMethod,
-            FlickrClient.ParameterKeys.format: FlickrClient.ParameterValues.responseFormat,
-            FlickrClient.ParameterKeys.noJSONCallback: FlickrClient.ParameterValues.disableJSONCallback,
-            FlickrClient.ParameterKeys.perPage: FlickrClient.ParameterValues.defaultPerPage
+            FlickrClient.ParameterKeys.safeSearch: FlickrClient.ParameterValues.useSafeSearch as AnyObject,
+            FlickrClient.ParameterKeys.text: text as AnyObject,
+            FlickrClient.ParameterKeys.extras: FlickrClient.ParameterValues.mediumURL as AnyObject,
+            FlickrClient.ParameterKeys.apiKey: FlickrClient.ParameterValues.apiKey as AnyObject,
+            FlickrClient.ParameterKeys.method: FlickrClient.ParameterValues.searchMethod as AnyObject,
+            FlickrClient.ParameterKeys.format: FlickrClient.ParameterValues.responseFormat as AnyObject,
+            FlickrClient.ParameterKeys.noJSONCallback: FlickrClient.ParameterValues.disableJSONCallback as AnyObject,
+            FlickrClient.ParameterKeys.perPage: FlickrClient.ParameterValues.defaultPerPage as AnyObject
         ]
         
-        let session = NSURLSession.sharedSession()
-        let request = NSURLRequest(URL: FlickrClient.sharedInstance().flickrURLFromParameters(methodParameters))
+        let session = URLSession.shared
+        let request = URLRequest(url: FlickrClient.sharedInstance().flickrURLFromParameters(methodParameters))
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) in
+        let task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             
             // Guard: Was there an error?
             guard error == nil else {
-                return completionHandler(photos: nil, errorText: "There was an error with your request.")
+                return completionHandler(nil, "There was an error with your request.")
             }
             
             // Guard: Did we get a successful 2XX response?
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                return completionHandler(photos: nil, errorText: "There was not a successful 2XX response.")
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else {
+                return completionHandler(nil, "There was not a successful 2XX response.")
             }
             
             // Guard: Was there any data returned?
             guard let data = data else {
-                return completionHandler(photos: nil, errorText: "No data was returned by the request.")
+                return completionHandler(nil, "No data was returned by the request.")
             }
             
             self.parseJSON(data, completionHandler: completionHandler)
-        }
+        }) 
         task.resume()
     }
     
     // MARK: - Parse the JSON data
     
-    private func parseJSON(data: NSData, completionHandler: FlickrSearchCompletionHandler) {
-        let parsedResult: AnyObject!
+    fileprivate func parseJSON(_ data: Data, completionHandler: FlickrSearchCompletionHandler) {
+        let parsedResult: [String: Any]!
         do {
-            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+            //parsedResult = try JSONSerialization.jsonObject(with
         } catch {
-            return completionHandler(photos: nil, errorText: "Could not parse the data as JSON: '\(data)'.")
+            return completionHandler(nil, "Could not parse the data as JSON: '\(data)'.")
         }
         
-        guard let photosDictionary = parsedResult[FlickrClient.JSONResponseKeys.photos] as? [String: AnyObject], photoArray = photosDictionary[FlickrClient.JSONResponseKeys.photo] as? [[String: AnyObject]] else {
-            return completionHandler(photos: nil, errorText: "Could not find keys \(FlickrClient.JSONResponseKeys.photos) and \(FlickrClient.JSONResponseKeys.photo) in \(parsedResult).")
+        guard let photosDictionary = parsedResult[FlickrClient.JSONResponseKeys.photos] as? [String: Any], let photoArray = photosDictionary[FlickrClient.JSONResponseKeys.photo] as? [[String: Any]] else {
+            return completionHandler(nil, "Could not find keys \(FlickrClient.JSONResponseKeys.photos) and \(FlickrClient.JSONResponseKeys.photo) in \(parsedResult).")
         }
         
         let photos: [FlickrPhoto] = FlickrPhoto.photosFromResults(photoArray)
-        completionHandler(photos: photos, errorText: nil)
+        completionHandler(photos, nil)
     }
     
     // MARK: - Get a photo
     
-    func imageDataForPhoto(flickrPhoto: FlickrPhoto, completionHandler: (imageData: NSData?, error: NSError?) -> Void) {
-        if let path = flickrPhoto.path, url = NSURL(string: path) {
+    func imageDataForPhoto(_ flickrPhoto: FlickrPhoto, completionHandler: @escaping (_ imageData: Data?, _ error: NSError?) -> Void) {
+        if let path = flickrPhoto.path, let url = URL(string: path) {
             makeRequestAtURL(url, method: .GET) { (data, error) in
                 
                 guard error == nil else {
-                    completionHandler(imageData: nil, error: error)
+                    completionHandler(nil, error as NSError?)
                     return
                 }
                 
-                completionHandler(imageData: data, error: nil)
+                completionHandler(data, nil)
             }
         }
     }
     
     // MARK: - Construct URL
     
-    private func flickrURLFromParameters(parameters: [String:AnyObject]) -> NSURL {
-        let components = NSURLComponents()
+    fileprivate func flickrURLFromParameters(_ parameters: [String:AnyObject]) -> URL {
+        var components = URLComponents()
         components.scheme = Components.scheme
         components.host = Components.host
         components.path = Components.path
-        components.queryItems = [NSURLQueryItem]()
+        components.queryItems = [URLQueryItem]()
         
         for (key, value) in parameters {
-            let queryItem = NSURLQueryItem(name: key, value: "\(value)")
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.queryItems!.append(queryItem)
         }
         
-        return components.URL!
+        return components.url!
     }
 
 }

@@ -20,10 +20,10 @@ class Note: NSManagedObject {
     }
 
     // Insert note in notebook
-    func insertNoteInNotebook(notebook: Notebook, title: String, content: String) -> Note {
-        let note: Note = NSEntityDescription.insertNewObjectForEntityForName("Note", inManagedObjectContext: DataManager.getContext()) as! Note
+    func insertNoteInNotebook(_ notebook: Notebook, title: String, content: String) -> Note {
+        let note: Note = NSEntityDescription.insertNewObject(forEntityName: "Note", into: DataManager.getContext()) as! Note
         note.notebook = notebook
-        note.createdDate = NSDate()
+        note.createdDate = Date()
         note.title = title
         note.content = content
         DataManager.saveManagedContext()
@@ -32,25 +32,25 @@ class Note: NSManagedObject {
     }
     
     // Delete note in notebook
-    func deleteNoteInNotebook(notebook: Notebook, indexPath: NSIndexPath) {
+    func deleteNoteInNotebook(_ notebook: Notebook, indexPath: IndexPath) {
         let notes = Notebook.sharedInstance().sortNotesInNotebook(notebook)
-        let note = notes[indexPath.row]
+        let note = notes[(indexPath as NSIndexPath).row]
         DataManager.deleteManagedObject(note)
     }
     
     // MARK: - String for createdDate
-    func formattedDateAndTimeString(date: NSDate) -> String {
-        let dateString = stringWithDateStyle(date, dateStyle: .MediumStyle, timeStyle: .NoStyle)
-        let timeString = stringWithDateStyle(date, dateStyle: .NoStyle, timeStyle: .ShortStyle)
+    func formattedDateAndTimeString(_ date: Date) -> String {
+        let dateString = stringWithDateStyle(date, dateStyle: .medium, timeStyle: .none)
+        let timeString = stringWithDateStyle(date, dateStyle: .none, timeStyle: .short)
         
         return "\(dateString) @ \(timeString)"
     }
     
-    func stringWithDateStyle(date: NSDate, dateStyle: NSDateFormatterStyle, timeStyle: NSDateFormatterStyle) -> String {
-        let formatter = NSDateFormatter()
+    func stringWithDateStyle(_ date: Date, dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style) -> String {
+        let formatter = DateFormatter()
         formatter.dateStyle = dateStyle
         formatter.timeStyle = timeStyle
-        return formatter.stringFromDate(date)
+        return formatter.string(from: date)
     }
     
 }

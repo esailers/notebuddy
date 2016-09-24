@@ -20,8 +20,8 @@ class Photo: NSManagedObject {
     }
     
     // Add photo to note
-    func insertPhotoInNote(note: Note, imageData: NSData) -> Photo {
-        let photo: Photo = NSEntityDescription.insertNewObjectForEntityForName("Photo", inManagedObjectContext: DataManager.getContext()) as! Photo
+    func insertPhotoInNote(_ note: Note, imageData: Data) -> Photo {
+        let photo: Photo = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: DataManager.getContext()) as! Photo
         photo.note = note
         photo.imageData = imageData
         DataManager.saveManagedContext()

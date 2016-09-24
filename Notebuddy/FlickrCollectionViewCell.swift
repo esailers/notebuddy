@@ -18,7 +18,7 @@ class FlickrCollectionViewCell: UICollectionViewCell {
     // MARK: - Configurations
     
     override func awakeFromNib() {
-        activityIndicator.color = UIColor.lightGrayColor()
+        activityIndicator.color = UIColor.lightGray
     }
     
 }

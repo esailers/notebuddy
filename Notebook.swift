@@ -8,6 +8,17 @@
 
 import Foundation
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class Notebook: NSManagedObject {
 
@@ -22,32 +33,32 @@ class Notebook: NSManagedObject {
     // MARK: - Methods
     
     // Create notebook
-    func insertNewNotebook(title: String) {
-        let notebook: Notebook = NSEntityDescription.insertNewObjectForEntityForName("Notebook", inManagedObjectContext: DataManager.getContext()) as! Notebook
+    func insertNewNotebook(_ title: String) {
+        let notebook: Notebook = NSEntityDescription.insertNewObject(forEntityName: "Notebook", into: DataManager.getContext()) as! Notebook
         notebook.title = title
         DataManager.saveManagedContext()
     }
     
     // Fetch all notebooks
     func fetchNotebookItems() -> [Notebook] {
-        let fetchRequest = NSFetchRequest(entityName: "Notebook")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Notebook")
         let context = DataManager.getContext()
-        let notebooks = try! context.executeFetchRequest(fetchRequest) as! [Notebook]
-        let sortedNotebooks = notebooks.sort { $0.title < $1.title }
+        let notebooks = try! context.fetch(fetchRequest) as! [Notebook]
+        let sortedNotebooks = notebooks.sorted { $0.title < $1.title }
         return sortedNotebooks
     }
     
     // Delete notebook
-    func deleteNotebook(indexPath: NSIndexPath) {
+    func deleteNotebook(_ indexPath: IndexPath) {
         let context = DataManager.getContext()
-        context.deleteObject(fetchNotebookItems()[indexPath.row])
+        context.delete(fetchNotebookItems()[(indexPath as NSIndexPath).row])
         DataManager.saveManagedContext()
     }
     
     // Sort notes in alphabetical order for a notebook
-    func sortNotesInNotebook(notebook: Notebook) -> [Note] {
+    func sortNotesInNotebook(_ notebook: Notebook) -> [Note] {
         let notes = notebook.notes?.allObjects as! [Note]
-        let sortedNotes = notes.sort { $0.title < $1.title }
+        let sortedNotes = notes.sorted { $0.title < $1.title }
         return sortedNotes
     }
 

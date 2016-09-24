@@ -41,7 +41,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             navigationItem.rightBarButtonItem = nil
             navigationItem.title = currentNote.formattedDateAndTimeString(currentNote.createdDate)
         } else {
-            navigationItem.title = Note.sharedInstance().formattedDateAndTimeString(NSDate())
+            navigationItem.title = Note.sharedInstance().formattedDateAndTimeString(Date())
         }
         
         AppDelegate().setNavigationBarColors(navigationController)
@@ -49,7 +49,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         tableView.estimatedRowHeight = 50
     }
     
-    override func willMoveToParentViewController(parent: UIViewController?) {
+    override func willMove(toParentViewController parent: UIViewController?) {
         if parent == nil {
             
             if noteContentCell.noteTextView.text == "" {
@@ -57,7 +57,7 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             }
             
             currentNote?.setValue(noteTitleCell.noteTitleTextField.text, forKey: "title")
-            if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
+            if let resizedImage = resizedImage, let imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
                 currentNote?.photo?.setValue(imageData, forKey: "imageData")
             }
             currentNote?.setValue(noteContentCell.noteTextView.text, forKey: "content")
@@ -68,21 +68,21 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     
     // MARK: - Actions
     
-    @IBAction func cancelNote(sender: UIBarButtonItem) {
+    @IBAction func cancelNote(_ sender: UIBarButtonItem) {
         resignFirstResponders()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func saveNote(sender: UIBarButtonItem) {
-        if let currentNotebook = currentNotebook, titleText = noteTitleCell.noteTitleTextField.text {
-            if titleText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "" && resizedImage != nil {
+    @IBAction func saveNote(_ sender: UIBarButtonItem) {
+        if let currentNotebook = currentNotebook, let titleText = noteTitleCell.noteTitleTextField.text {
+            if titleText.trimmingCharacters(in: CharacterSet.whitespaces) != "" && resizedImage != nil {
                 currentNote = Note.sharedInstance().insertNoteInNotebook(currentNotebook, title: titleText, content: noteContentCell.noteTextView.text)
                 
-                if let resizedImage = resizedImage, imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
+                if let resizedImage = resizedImage, let imageData = UIImageJPEGRepresentation(resizedImage, 1.0) {
                     currentNote?.photo = Photo.sharedInstance().insertPhotoInNote(currentNote!, imageData: imageData)
                 }
                 resignFirstResponders()
-                dismissViewControllerAnimated(true, completion: nil)
+                dismiss(animated: true, completion: nil)
             } else { presentAlertForTitle("Warning", message: "Please enter a title and add a photo for your note.") }
         }
     }
@@ -94,11 +94,11 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         noteContentCell.noteTextView.resignFirstResponder()
     }
     
-    private func configurePopover(popoverPresentationController: UIPopoverPresentationController) {
+    fileprivate func configurePopover(_ popoverPresentationController: UIPopoverPresentationController) {
         resignFirstResponders()
         popoverPresentationController.sourceRect = notePhotoCell.noteImageView.frame //noteImageView.frame
         popoverPresentationController.sourceView = self.view
-        popoverPresentationController.permittedArrowDirections = .Any
+        popoverPresentationController.permittedArrowDirections = .any
     }
     
     // MARK: - Gesture Recognizer
@@ -109,60 +109,60 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         notePhotoCell.noteImageView.addGestureRecognizer(tapGesture)
     }
     
-    func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+    func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         presentImageActionSheet()
     }
     
     // MARK: - UIImagePickerControllerDelegate
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             resizedImage = resizeImage(selectedImage)
             
-            notePhotoCell.notePhotoLabel.hidden = true
+            notePhotoCell.notePhotoLabel.isHidden = true
             notePhotoCell.noteImageView.image = resizedImage
             
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
     }
     
     // MARK: - Resize image
     
-    private func resizeImage(image: UIImage) -> UIImage {
+    fileprivate func resizeImage(_ image: UIImage) -> UIImage {
         let aspectRatio: CGSize = image.size
-        let boundingRect: CGRect = CGRectMake(0.0, 0.0, 400.0, 400.0)
+        let boundingRect: CGRect = CGRect(x: 0.0, y: 0.0, width: 400.0, height: 400.0)
         
-        let resizedFrame: CGRect = AVMakeRectWithAspectRatioInsideRect(aspectRatio, boundingRect)
+        let resizedFrame: CGRect = AVMakeRect(aspectRatio: aspectRatio, insideRect: boundingRect)
         
         let hasAlpha = false
         let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
         
         UIGraphicsBeginImageContextWithOptions(resizedFrame.size, !hasAlpha, scale)
         
-        let rect = CGRect(origin: CGPointZero, size: resizedFrame.size)
+        let rect = CGRect(origin: CGPoint.zero, size: resizedFrame.size)
         UIRectClip(rect)
-        image.drawInRect(rect)
+        image.draw(in: rect)
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return scaledImage
+        return scaledImage!
     }
     
     // MARK: - UITableViewDataSource
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        switch indexPath.row {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch (indexPath as NSIndexPath).row {
         case 0:
-            noteTitleCell = tableView.dequeueReusableCellWithIdentifier(noteTitleCellIdentifier, forIndexPath: indexPath) as! NoteTitleTableViewCell
+            noteTitleCell = tableView.dequeueReusableCell(withIdentifier: noteTitleCellIdentifier, for: indexPath) as! NoteTitleTableViewCell
             noteTitleCell.noteTitleTextField.delegate = self
             
             if let currentNote = currentNote {
@@ -171,20 +171,20 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             
             return noteTitleCell
         case 1:
-            notePhotoCell = tableView.dequeueReusableCellWithIdentifier(notePhotoCellIdentifier, forIndexPath: indexPath) as! NotePhotoTableViewCell
+            notePhotoCell = tableView.dequeueReusableCell(withIdentifier: notePhotoCellIdentifier, for: indexPath) as! NotePhotoTableViewCell
             
-            if let currentNote = currentNote, photo = currentNote.photo, image = UIImage(data: photo.imageData!) {
+            if let currentNote = currentNote, let photo = currentNote.photo, let image = UIImage(data: photo.imageData! as Data) {
                 notePhotoCell.noteImageView.image = image
-                notePhotoCell.notePhotoLabel.hidden = true
+                notePhotoCell.notePhotoLabel.isHidden = true
             }
             
-            notePhotoCell.noteImageView.userInteractionEnabled = true
+            notePhotoCell.noteImageView.isUserInteractionEnabled = true
             addTapGestureRecognizer()
             
             return notePhotoCell
         case 2:
-            noteContentCell = tableView.dequeueReusableCellWithIdentifier(noteContentCellIdentifier, forIndexPath: indexPath) as! NoteContentTableViewCell
-            noteContentCell.noteTextView.textContainerInset = UIEdgeInsetsZero
+            noteContentCell = tableView.dequeueReusableCell(withIdentifier: noteContentCellIdentifier, for: indexPath) as! NoteContentTableViewCell
+            noteContentCell.noteTextView.textContainerInset = UIEdgeInsets.zero
             noteContentCell.noteTextView.delegate = self
             
             if let currentNote = currentNote {
@@ -195,28 +195,28 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             
             return noteContentCell
         default:
-            let cell = tableView.dequeueReusableCellWithIdentifier("cellIdentifier", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
             return cell
         }
     }
     
     // MARK: - UITableViewDelegate
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        guard indexPath.row == 1 else { return UITableViewAutomaticDimension }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard (indexPath as NSIndexPath).row == 1 else { return UITableViewAutomaticDimension }
         return 200.0
     }
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
     // MARK: - UITextViewDelegate
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         // Code from http://candycode.io/self-sizing-uitextview-in-a-uitableview-using-auto-layout-like-reminders-app/
         let currentOffset = tableView.contentOffset
         UIView.setAnimationsEnabled(false)
@@ -226,13 +226,13 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
         tableView.setContentOffset(currentOffset, animated: false)
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == "Enter text"  {
             textView.text = ""
         }
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Enter text"
         }
@@ -241,30 +241,30 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
     // MARK: - UIAlertController
     
     func presentImageActionSheet() {
-        let alertController = UIAlertController(title: "Add Photo", message: "", preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: "Add Photo", message: "", preferredStyle: .actionSheet)
         
         let cancelButtonTitle = "Cancel"
         let cameraButtonTitle = "Camera"
         let photoLibraryButtonTitle = "Photo Library"
         let flickrPhotoButtonTitle = "Flickr Search"
         
-        let cancelAction = UIAlertAction(title: cancelButtonTitle, style: .Cancel) { action in
+        let cancelAction = UIAlertAction(title: cancelButtonTitle, style: .cancel) { action in
             
         }
         
-        let cameraAction = UIAlertAction(title: cameraButtonTitle, style: .Default) { action in
-            self.configurePicker(.Camera)
+        let cameraAction = UIAlertAction(title: cameraButtonTitle, style: .default) { action in
+            self.configurePicker(.camera)
         }
         
-        let photoLibraryAction = UIAlertAction(title: photoLibraryButtonTitle, style: .Default) { action in
-            self.configurePicker(.PhotoLibrary)
+        let photoLibraryAction = UIAlertAction(title: photoLibraryButtonTitle, style: .default) { action in
+            self.configurePicker(.photoLibrary)
         }
         
-        let flickrPhotoAction = UIAlertAction(title: flickrPhotoButtonTitle, style: .Default) { action in
-            self.performSegueWithIdentifier(StoryboardSegue.kSegueToFlickr, sender: self)
+        let flickrPhotoAction = UIAlertAction(title: flickrPhotoButtonTitle, style: .default) { action in
+            self.performSegue(withIdentifier: StoryboardSegue.kSegueToFlickr, sender: self)
         }
         
-        if UIImagePickerController.isSourceTypeAvailable(.Camera) { alertController.addAction(cameraAction) }
+        if UIImagePickerController.isSourceTypeAvailable(.camera) { alertController.addAction(cameraAction) }
         alertController.addAction(cancelAction)
         alertController.addAction(photoLibraryAction)
         alertController.addAction(flickrPhotoAction)
@@ -274,44 +274,44 @@ class NoteTableViewController: UITableViewController, UIImagePickerControllerDel
             configurePopover(popoverPresentationController)
         }
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
-    func configurePicker(sourceType: UIImagePickerControllerSourceType) {
+    func configurePicker(_ sourceType: UIImagePickerControllerSourceType) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = sourceType
         AppDelegate().setNavigationBarColors(imagePickerController.navigationController)
         
         // Configure popover for Photo Library on iPad
-        if imagePickerController.sourceType == .PhotoLibrary { imagePickerController.modalPresentationStyle = .Popover }
+        if imagePickerController.sourceType == .photoLibrary { imagePickerController.modalPresentationStyle = .popover }
         if let popoverPresentationController = imagePickerController.popoverPresentationController {
             configurePopover(popoverPresentationController)
         }
         
-        presentViewController(imagePickerController, animated: true, completion: nil)
+        present(imagePickerController, animated: true, completion: nil)
     }
     
     // MARK: - FlickrViewControllerDelegate
     
-    func selectedImagePath(path: String) {
-        if let imageURL = NSURL(string: path), imageData = NSData(contentsOfURL: imageURL) {
+    func selectedImagePath(_ path: String) {
+        if let imageURL = URL(string: path), let imageData = try? Data(contentsOf: imageURL) {
             notePhotoCell.noteImageView.image = UIImage(data: imageData)
             resizedImage = notePhotoCell.noteImageView.image
-            notePhotoCell.notePhotoLabel.hidden = true
+            notePhotoCell.notePhotoLabel.isHidden = true
         }
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Navigation
     
-    private struct StoryboardSegue {
+    fileprivate struct StoryboardSegue {
         static let kSegueToFlickr = "segueToFlickr"
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == StoryboardSegue.kSegueToFlickr {
-            if let destination = segue.destinationViewController as? UINavigationController, flickrVC = destination.topViewController as? FlickrViewController {
+            if let destination = segue.destination as? UINavigationController, let flickrVC = destination.topViewController as? FlickrViewController {
                 flickrVC.delegate = self
             }
         }

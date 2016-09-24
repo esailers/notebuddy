@@ -14,12 +14,12 @@ struct FlickrPhoto {
     let path: String?
     
     // MARK: Initializer
-    init(dictionary: [String: AnyObject]) {
+    init(dictionary: [String: Any]) {
         path = dictionary[FlickrClient.JSONResponseKeys.mediumURL] as? String
     }
     
     // Get Flickr photos from results
-    static func photosFromResults(results: [[String: AnyObject]]) -> [FlickrPhoto] {
+    static func photosFromResults(_ results: [[String: Any]]) -> [FlickrPhoto] {
         var photos = [FlickrPhoto]()
         
         for result in results {

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FlickrViewControllerDelegate: class {
-    func selectedImagePath(path: String)
+    func selectedImagePath(_ path: String)
 }
 
 class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -39,19 +39,19 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
         configureKeyboardView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         flickrTextField.becomeFirstResponder()
     }
     
     // MARK: - Actions
     
-    @IBAction func cancelTapped(sender: UIBarButtonItem) {
+    @IBAction func cancelTapped(_ sender: UIBarButtonItem) {
         flickrTextField.resignFirstResponder()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func searchTapped(sender: UIBarButtonItem) {
+    @IBAction func searchTapped(_ sender: UIBarButtonItem) {
         searchFlickr()
     }
     
@@ -60,7 +60,7 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
     func searchFlickr() {
         if let text = flickrTextField.text {
             FlickrClient.sharedInstance().resultsFromFlickrSearch(text) { (photos, errorText) in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if let photos = photos {
                         self.photos = photos
                         self.collectionView.reloadData()
@@ -75,8 +75,8 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
     func configureKeyboardView() {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 44))
         
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-        let doneBarButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(self.dismissKeyboard))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.dismissKeyboard))
         
         toolbar.items = [flexSpace, doneBarButton]
         flickrTextField.inputAccessoryView = toolbar
@@ -88,22 +88,22 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchFlickr()
         return true
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(flickrCell, forIndexPath: indexPath) as! FlickrCollectionViewCell
-        let photo = photos[indexPath.item]
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: flickrCell, for: indexPath) as! FlickrCollectionViewCell
+        let photo = photos[(indexPath as NSIndexPath).item]
         
-        cell.activityIndicator.hidden = false
+        cell.activityIndicator.isHidden = false
         cell.activityIndicator.startAnimating()
         
         FlickrClient().imageDataForPhoto(photo) {
@@ -113,8 +113,8 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
-                cell.activityIndicator.hidden = true
+            DispatchQueue.main.async {
+                cell.activityIndicator.isHidden = true
                 cell.activityIndicator.stopAnimating()
                 if let imageData = imageData {
                     cell.flickrImage.image = UIImage(data: imageData)
@@ -126,11 +126,11 @@ class FlickrViewController: UIViewController, UITextFieldDelegate, UICollectionV
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let photo = photos[indexPath.item]
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = photos[(indexPath as NSIndexPath).item]
         
         flickrTextField.resignFirstResponder()
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             if let path = photo.path {
                 self.delegate?.selectedImagePath(path)
             }
@@ -143,11 +143,11 @@ extension UIViewController {
     
     // MARK: - UIAlertController
     
-    func presentAlertForTitle(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+    func presentAlertForTitle(_ title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(okAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
 }

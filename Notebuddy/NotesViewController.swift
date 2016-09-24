@@ -27,8 +27,8 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editBarButton = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: #selector(self.editNote(_:)))
-        addBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(self.addNote(_:)))
+        editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editNote(_:)))
+        addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addNote(_:)))
         navigationItem.rightBarButtonItems = [editBarButton, addBarButton]
         
         navigationItem.title = currentNotebook?.title
@@ -37,7 +37,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if let currentNotebook = currentNotebook {
@@ -49,80 +49,80 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     // MARK: - Actions
     
-    func editNote(sender: UIBarButtonItem) {
-        if tableView.editing {
+    func editNote(_ sender: UIBarButtonItem) {
+        if tableView.isEditing {
             editBarButton.title = "Edit"
-            addBarButton.enabled = true
+            addBarButton.isEnabled = true
             tableView.setEditing(false, animated: true)
         } else {
             editBarButton.title = "Done"
-            addBarButton.enabled = false
+            addBarButton.isEnabled = false
             tableView.setEditing(true, animated: true)
         }
     }
     
-    func addNote(sender: UIBarButtonItem) {
-        performSegueWithIdentifier(StoryboardSegue.kSegueToAddNote, sender: self)
+    func addNote(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: StoryboardSegue.kSegueToAddNote, sender: self)
     }
     
     // MARK: - UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notes.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(noteCell, forIndexPath: indexPath)
-        let note = notes[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: noteCell, for: indexPath)
+        let note = notes[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = note.title
         cell.detailTextLabel?.text = Note.sharedInstance().formattedDateAndTimeString(note.createdDate)
-        cell.detailTextLabel?.textColor = UIColor.lightGrayColor()
+        cell.detailTextLabel?.textColor = UIColor.lightGray
         cell.imageView?.image = UIImage(named: "note")
         return cell
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) in
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
             if let currentNotebook = self.currentNotebook {
                 Note.sharedInstance().deleteNoteInNotebook(currentNotebook, indexPath: indexPath)
             }
-            self.notes.removeAtIndex(indexPath.row)
+            self.notes.remove(at: (indexPath as NSIndexPath).row)
             tableView.reloadData()
         }
         
         editBarButton.title = "Done"
-        addBarButton.enabled = false
+        addBarButton.isEnabled = false
         
         return [button]
     }
     
-    func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         editBarButton.title = "Edit"
-        addBarButton.enabled = true
+        addBarButton.isEnabled = true
     }
 
     // MARK: - Navigation
     
-    private struct StoryboardSegue {
+    fileprivate struct StoryboardSegue {
         static let kSegueToAddNote = "segueToAddNote"
         static let kSegueToEditNote = "segueToEditNote"
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == StoryboardSegue.kSegueToAddNote {
-            if let destination = segue.destinationViewController as? UINavigationController, noteTVC = destination.visibleViewController as? NoteTableViewController {
+            if let destination = segue.destination as? UINavigationController, let noteTVC = destination.visibleViewController as? NoteTableViewController {
                 noteTVC.currentNotebook = currentNotebook
             }
         } else if segue.identifier == StoryboardSegue.kSegueToEditNote {
-            if let destination = segue.destinationViewController as? NoteTableViewController, indexPath = tableView.indexPathForSelectedRow {
+            if let destination = segue.destination as? NoteTableViewController, let indexPath = tableView.indexPathForSelectedRow {
                 destination.currentNotebook = currentNotebook
-                let selectedNote = notes[indexPath.row]
+                let selectedNote = notes[(indexPath as NSIndexPath).row]
                 destination.currentNote = selectedNote
             }
         }

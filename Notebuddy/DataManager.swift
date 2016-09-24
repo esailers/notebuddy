@@ -14,8 +14,8 @@ class DataManager {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
     
-    class func deleteManagedObject(object: NSManagedObject) {
-        getContext().deleteObject(object)
+    class func deleteManagedObject(_ object: NSManagedObject) {
+        getContext().delete(object)
         saveManagedContext()
     }
     

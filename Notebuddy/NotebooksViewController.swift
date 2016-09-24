@@ -25,37 +25,37 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editBarButton = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: #selector(self.editNotebook(_:)))
-        addBarButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(self.addNotebook(_:)))
+        editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editNotebook(_:)))
+        addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addNotebook(_:)))
         navigationItem.rightBarButtonItems = [editBarButton, addBarButton]
 
         tableView.dataSource = self
         tableView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.configureNavigationColors), name: ConfigureNavigationColorsNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.configureNavigationColors), name: NSNotification.Name(rawValue: ConfigureNavigationColorsNotification), object: nil)
         
         self.notebooks = Notebook.sharedInstance().fetchNotebookItems()
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: ConfigureNavigationColorsNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: ConfigureNavigationColorsNotification), object: nil)
     }
     
     // MARK: - Actions
     
-    func editNotebook(sender: UIBarButtonItem) {
-        if tableView.editing {
+    func editNotebook(_ sender: UIBarButtonItem) {
+        if tableView.isEditing {
             editBarButton.title = "Edit"
-            addBarButton.enabled = true
+            addBarButton.isEnabled = true
             tableView.setEditing(false, animated: true)
         } else {
             editBarButton.title = "Done"
-            addBarButton.enabled = false
+            addBarButton.isEnabled = false
             tableView.setEditing(true, animated: true)
         }
     }
     
-    func addNotebook(sender: UIBarButtonItem) {
+    func addNotebook(_ sender: UIBarButtonItem) {
         presentAlertForNewNotebook()
     }
     
@@ -67,51 +67,51 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     
     // MARK: - UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notebooks.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(notebookCell, forIndexPath: indexPath)
-        cell.textLabel?.text = notebooks[indexPath.row].title
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: notebookCell, for: indexPath)
+        cell.textLabel?.text = notebooks[(indexPath as NSIndexPath).row].title
         cell.imageView?.image = UIImage(named: "notebook")
         return cell
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) in
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
             Notebook.sharedInstance().deleteNotebook(indexPath)
-            self.notebooks.removeAtIndex(indexPath.row)
+            self.notebooks.remove(at: (indexPath as NSIndexPath).row)
             tableView.reloadData()
         }
         
         editBarButton.title = "Done"
-        addBarButton.enabled = false
+        addBarButton.isEnabled = false
         
         return [button]
     }
     
-    func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         editBarButton.title = "Edit"
-        addBarButton.enabled = true
+        addBarButton.isEnabled = true
     }
     
     // MARK: - Navigation
     
-    private struct StoryboardSegue {
+    fileprivate struct StoryboardSegue {
         static let kSegueToNotes = "segueToNotes"
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == StoryboardSegue.kSegueToNotes {
-            if let destination = segue.destinationViewController as? NotesViewController, indexPath = tableView.indexPathForSelectedRow {
-                let selectedNotebook = notebooks[indexPath.row]
+            if let destination = segue.destination as? NotesViewController, let indexPath = tableView.indexPathForSelectedRow {
+                let selectedNotebook = notebooks[(indexPath as NSIndexPath).row]
                 destination.currentNotebook = selectedNotebook
             }
         }
@@ -119,20 +119,20 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
     
     // MARK: - UIAlert
     
-    private func presentAlertForNewNotebook() {
-        let alertController = UIAlertController(title: "New Notebook", message: nil, preferredStyle: .Alert)
-        alertController.addTextFieldWithConfigurationHandler { textField in
+    fileprivate func presentAlertForNewNotebook() {
+        let alertController = UIAlertController(title: "New Notebook", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
             textField.placeholder = "Title"
-            textField.clearButtonMode = .WhileEditing
-            textField.autocapitalizationType = .Sentences
-            textField.returnKeyType = .Done
+            textField.clearButtonMode = .whileEditing
+            textField.autocapitalizationType = .sentences
+            textField.returnKeyType = .done
             textField.enablesReturnKeyAutomatically = true
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .Default) { action in
-            if let textFields = alertController.textFields, text = textFields[0].text  {
-                if text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "" {
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: .default) { action in
+            if let textFields = alertController.textFields, let text = textFields[0].text  {
+                if text.trimmingCharacters(in: CharacterSet.whitespaces) != "" {
                     Notebook.sharedInstance().insertNewNotebook(text)
                     self.notebooks = Notebook.sharedInstance().fetchNotebookItems()
                     self.tableView.reloadData()
@@ -142,7 +142,7 @@ class NotebooksViewController: UIViewController, UITableViewDataSource, UITableV
         
         alertController.addAction(cancelAction)
         alertController.addAction(saveAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
 }
