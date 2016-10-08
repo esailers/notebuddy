@@ -34,9 +34,8 @@ class FlickrClient {
     // Swift 2.2
     // let task = URLSession.shared().dataTask(with: request)
     
-    // Swift 2.3
+    // Swift 3.0
     // let task = URLSession.shared().dataTask(with: request as URLRequest) {
-    
     
     fileprivate func makeRequestAtURL(_ url: URL, method: HTTPMethod, completionHandler: @escaping (Data?, NSError?) -> Void) {
         let request = NSMutableURLRequest(url: url)
@@ -98,7 +97,6 @@ class FlickrClient {
         let parsedResult: [String: Any]!
         do {
             parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-            //parsedResult = try JSONSerialization.jsonObject(with
         } catch {
             return completionHandler(nil, "Could not parse the data as JSON: '\(data)'.")
         }
